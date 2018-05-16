@@ -1,6 +1,7 @@
 const MODEL_NAME = 'Options';
 const Schema = require('mongoose').Schema;
 const modCommon = require('../common');
+const ActionList = ['search', 'listAndCount', 'loadListByIds', 'loadList','getAllAsObject'];
 exports.keepNotExtended = false;
 exports.thisModelName = MODEL_NAME;
 exports.thisSchema = {
@@ -9,13 +10,8 @@ exports.thisSchema = {
 		searchable: true,
 		required: true
 	},
-	title: {
-		type: String,
-		searchable: true,
-		required: true
-	},
 	value: {
-		type: String,
+		type: Schema.Types.Mixed,
 		searchable: true,
 		required: true
 	},
@@ -28,4 +24,4 @@ exports.thisSchema = {
 
 exports.thisStatics = {};
 
-modCommon.extend(modCommon.Model, exports.thisStatics, ['search','listAndCount','loadListByIds','loadList'],{MODEL_NAME});
+modCommon.extend(modCommon.Model, exports.thisStatics, ActionList , {MODEL_NAME});

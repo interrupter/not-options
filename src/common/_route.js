@@ -31,7 +31,7 @@ exports.getProperty = (list, name, field = 'id')=>{
 	return false;
 };
 
-exports.toPlainObject = (data, extract = false)=>{	
+exports.toPlainObject = (data, extract = false)=>{
 	for(let i in data){
 		if (data[i] && data[i].toObject){
 			data[i] = data[i].toObject();
@@ -69,8 +69,6 @@ exports.processRawList = (results, modelName)=>{
 		try{
 			//упрощаем из документа до объекта
 			results = exports.toPlainObject(results);
-			//запрашиваем дополнительные данные по полям свойств
-			results = await exports.enrichWithProperties(results, modelName);
 			resolve(results);
 		}catch(e){
 			reject(e);
@@ -134,45 +132,13 @@ exports.getOwner = (req)=>{
 exports.get_getOne = function(input){
 	return (req, res)=>{
 		let id = req.params._id,
-			thisModel = App.getModel(input.MODEL_NAME),
-			Stat = App.getModel('Statistic');
+			thisModel = App.getModel(input.MODEL_NAME);
 		thisModel.getOne(id)
 			.then((items)=>{
 				return this.enrichOne(items, input.MODEL_NAME);
 			})
-			.then(exports.checkFavorite(req))
 			.then((item) => {
 				res.status(200).json(item);
-				Stat.add(item._id,
-					{
-						id:			item.id,
-						action: 	'view',
-						model: 		input.MODEL_NAME,
-						user: 		req.session.user,
-						session: 	req.session.id,
-						ip:			requestIp.getClientIp(req)
-					});
-				if(item.properties){
-					let propToModel = galleryConfig.get('mapping');
-					for(let propName in propToModel){
-						if(item.properties.hasOwnProperty(propName)){
-							for(let t in item.properties[propName]){
-								let property =item.properties[propName][t];
-								if(property && property.id && property._id){
-									Stat.add(property._id,
-										{
-											id:			property.id,
-											action: 	'view',
-											model: 		propToModel[propName],
-											user: 		req.session.user,
-											session: 	req.session.id,
-											ip:			requestIp.getClientIp(req)
-										});
-								}
-							}
-						}
-					}
-				}
 			})
 			.catch((e) => {
 				res.status(500).json(e);
@@ -192,6 +158,24 @@ exports.get_getRaw = function(input){
 			.catch((e) => {
 				res.status(500).json(e);
 				log.error(e);
+			});
+	};
+};
+
+exports.get_update = function(input){
+	return (req, res)=>{
+		let id = req.params._id,
+			thisModel = this.getModel(input.MODEL_NAME);
+		delete req.body._id;
+		thisModel.findOneAndUpdate({
+			_id: id,
+		}, req.body)
+			.then(item => {
+				res.status(200).json(item);
+			})
+			.catch((err)=>{
+				log.error(err);
+				res.status(500).json({});
 			});
 	};
 };

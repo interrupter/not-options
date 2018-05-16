@@ -1,4 +1,5 @@
 const path = require('path'),
+	middleware = require('./src/common').middleware,
 	parts = ['templates', 'controllers','locales', 'models', 'routes'];
 
 let paths = {};
@@ -9,5 +10,9 @@ parts.forEach((i, item)=>{
 
 module.exports = {
 	name: 'not-options',
-	paths
+	paths,
+	getMiddleware(options){
+		log.info('...options middleware');
+		return middleware.bind(this);
+	},
 };

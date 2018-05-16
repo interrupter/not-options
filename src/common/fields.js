@@ -4,11 +4,6 @@ module.exports = {
 		placeholder: 'ID',
 		label: 'ID'
 	},
-	title: {
-		type: 'textfield',
-		placeholder: 'Название',
-		label: 'Название'
-	},
 	submit: {
 		type: 'submit',
 		target: 'footer',
