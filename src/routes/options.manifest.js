@@ -38,7 +38,7 @@ module.exports = {
 			title: 'Создание опции',
 			fields: {
 				admin: [
-					'id',					
+					'id',
 					'value',
 					'active',
 					'submit'

@@ -12,6 +12,7 @@ const MODEL_NAME = 'Options',
 
 const log = require('not-log')(module),
 	query = require('not-filter'),
+	modCommon = require('../common'),
 	options = require('not-config').readerForModule('options');
 
 exports.before = (req) => {
