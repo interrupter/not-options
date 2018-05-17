@@ -27,7 +27,6 @@ exports.get_search = (input)=>{
 	};
 };
 
-
 exports.get_getAllAsObject = (input)=>{
 	return () => {
 		let model = App.getModel(input.MODEL_NAME);

@@ -45,6 +45,12 @@ module.exports = {
 				]
 			}
 		},
+		delete: {
+			method: 'DELETE',
+			postFix: '/:record[_id]',
+			isArray: false,
+			admin: true
+		},
 		update: {
 			method: 'POST',
 			isArray: false,

@@ -165,7 +165,7 @@ exports.get_getRaw = function(input){
 exports.get_update = function(input){
 	return (req, res)=>{
 		let id = req.params._id,
-			thisModel = this.getModel(input.MODEL_NAME);
+			thisModel = App.getModel(input.MODEL_NAME);
 		delete req.body._id;
 		thisModel.findOneAndUpdate({
 			_id: id,
@@ -176,6 +176,41 @@ exports.get_update = function(input){
 			.catch((err)=>{
 				log.error(err);
 				res.status(500).json({});
+			});
+	};
+};
+
+
+exports.get_create = function(input){
+	return (req, res)=>{
+		let data = req.body,
+			thisModel = App.getModel(input.MODEL_NAME);
+		data.__latest = true;
+		delete data._id;
+		if (!req.body.active) {
+			req.body.active = false;
+		}
+		thisModel.add(data)
+			.then((item) => {
+				res.status(200).json(item);
+			}).catch((e) => {
+				res.status(500).json(e);
+				log.error(e);
+			});
+	};
+};
+
+
+exports.get_delete = function(input){
+	return (req, res)=>{
+		var id = req.params._id,
+			thisModel = App.getModel(input.MODEL_NAME);
+		thisModel.findByIdAndRemove(id)
+			.then(() => {
+				res.status(200).json({});
+			}).catch((e) => {
+				res.status(500).json(e);
+				log.error(e);
 			});
 	};
 };

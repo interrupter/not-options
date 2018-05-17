@@ -95,7 +95,8 @@ class ncOptions extends notFramework.CRUDController {
 		let newRecord = this.make[this.getModuleName()]({
 			'_id': null,
 			id: this.getOptions('names.single'),
-			value: ''
+			value: '',
+			active: true
 		});
 		return newRecord;
 	}
