@@ -1,7 +1,4 @@
-const log = require('not-log')(module),
-	query = require('not-filter'),
-	mongoose = require('mongoose'),
-	Auth = require('not-node').Auth,
+const query = require('not-filter'),
 	App = require('not-node').Application;
 
 exports.extractString = (variants, locales)=>{
@@ -31,7 +28,7 @@ exports.getProperty = (list, name, field = 'id')=>{
 	return false;
 };
 
-exports.toPlainObject = (data, extract = false)=>{
+exports.toPlainObject = (data)=>{
 	for(let i in data){
 		if (data[i] && data[i].toObject){
 			data[i] = data[i].toObject();
@@ -48,8 +45,8 @@ exports.toPlainObject = (data, extract = false)=>{
 *					1 - общее число
 *	@return {Promise} объект с полями (list, count)
 */
-exports.processRawListAndCount = (results, modelName)=>{
-	return new Promise(async(resolve, reject)=>{
+exports.processRawListAndCount = (results)=>{
+	return new Promise(function(resolve, reject){
 		try{
 			let [list, count] = results;
 			//упрощаем из документа до объекта
@@ -64,8 +61,8 @@ exports.processRawListAndCount = (results, modelName)=>{
 	});
 };
 
-exports.processRawList = (results, modelName)=>{
-	return new Promise(async(resolve, reject)=>{
+exports.processRawList = (results)=>{
+	return new Promise(function(resolve, reject){
 		try{
 			//упрощаем из документа до объекта
 			results = exports.toPlainObject(results);
@@ -84,7 +81,7 @@ exports.processRawList = (results, modelName)=>{
 *
 */
 exports.get_listAndCount = function (input){
-	return async(req, res)=>{
+	return function(req, res){
 		let thisModel = App.getModel(input.MODEL_NAME),
 			thisSchema = App.getModelSchema(input.MODEL_NAME);
 		thisModel.listAndCount(req)
@@ -95,14 +92,14 @@ exports.get_listAndCount = function (input){
 				res.status(200).json(result);
 			})
 			.catch((err)=>{
-				log.error(err);
+				App.reporter.report(err);
+				res.status(500).json({});
 			});
 	};
 };
 
 exports.get_list = function (input){
 	return (req, res)=>{
-		log.info('list ',input.MODEL_NAME);
 		let thisModel = App.getModel(input.MODEL_NAME),
 			thisSchema = App.getModelSchema(input.MODEL_NAME);
 		thisModel.list(req)
@@ -112,7 +109,7 @@ exports.get_list = function (input){
 				res.status(200).json(data);
 			})
 			.catch((err)=>{
-				log.error(err);
+				App.reporter.report(err);
 				res.status(500).json({});
 			});
 	};
@@ -141,8 +138,8 @@ exports.get_getOne = function(input){
 				res.status(200).json(item);
 			})
 			.catch((e) => {
-				res.status(500).json(e);
-				log.error(e);
+				App.reporter.report(e);
+				res.status(500).json({});
 			});
 	};
 };
@@ -156,8 +153,8 @@ exports.get_getRaw = function(input){
 				res.status(200).json(item);
 			})
 			.catch((e) => {
-				res.status(500).json(e);
-				log.error(e);
+				App.reporter.report(e);
+				res.status(500).json({});
 			});
 	};
 };
@@ -174,7 +171,7 @@ exports.get_update = function(input){
 				res.status(200).json(item);
 			})
 			.catch((err)=>{
-				log.error(err);
+				App.reporter.report(err);
 				res.status(500).json({});
 			});
 	};
@@ -194,8 +191,8 @@ exports.get_create = function(input){
 			.then((item) => {
 				res.status(200).json(item);
 			}).catch((e) => {
-				res.status(500).json(e);
-				log.error(e);
+				App.reporter.report(e);
+				res.status(500).json({});
 			});
 	};
 };
@@ -209,8 +206,8 @@ exports.get_delete = function(input){
 			.then(() => {
 				res.status(200).json({});
 			}).catch((e) => {
-				res.status(500).json(e);
-				log.error(e);
+				App.reporter.report(e);
+				res.status(500).json({});
 			});
 	};
 };

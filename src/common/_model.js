@@ -30,7 +30,7 @@ exports.get_search = (input)=>{
 exports.get_getAllAsObject = (input)=>{
 	return () => {
 		let model = App.getModel(input.MODEL_NAME);
-		return App.getModel(input.MODEL_NAME).find({'active': true}).exec()
+		return model.find({'active': true}).exec()
 			.then((results) => {
 				let options = {};
 				if(Array.isArray(results)){
