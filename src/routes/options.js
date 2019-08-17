@@ -1,5 +1,6 @@
-const MODEL_NAME = 'Options',
-	ActionList = [
+const
+	UserActions = [],
+	AdminActions = [
 		'get',
 		'getRaw',
 		'create',
@@ -8,9 +9,17 @@ const MODEL_NAME = 'Options',
 		'list',
 		'listAndCount',
 		'listAll'
-	];
+	],
+	MODEL_NAME = 'Options',
+	MODEL_OPTIONS = {
+		MODEL_NAME,
+		MODEL_TITLE: 	'Опции',
+		populate: {}
+	};
 
-const query = require('not-filter'), modCommon = require('../common');
+const query = require('not-filter');
+const metaExtend = require('not-meta').extend;
+const metaRoute = require('not-meta').Route;
 
 exports.before = (req) => {
 	let optionsSchema = this.getModelSchema(MODEL_NAME);
@@ -24,4 +33,5 @@ exports.before = (req) => {
 exports.after = ()=>{};
 
 //we have only Admin level routes so, all goes with '_' prefix standart for him
-modCommon.extend(modCommon.Route, module.exports, ActionList, {MODEL_NAME}, '_');
+metaExtend(metaRoute, module.exports, AdminActions, MODEL_OPTIONS, '_');
+metaExtend(metaRoute, module.exports, UserActions, MODEL_OPTIONS, '');

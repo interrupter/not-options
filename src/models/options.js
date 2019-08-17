@@ -1,8 +1,15 @@
 try{
 	const MODEL_NAME = 'Options';
 	const Schema = require('mongoose').Schema;
-	const modCommon = require('../common');
-	const ActionList = ['search', 'listAndCount', 'loadListByIds', 'loadList','getAllAsObject'];
+	const metaExtend = require('not-meta').extend;
+	const commonModel = require('../common/_model.js');
+	const ActionList = [
+		'search',
+		'listAndCount',
+		'loadListByIds',
+		'loadList',
+		'getAllAsObject'
+	];
 	exports.keepNotExtended = false;
 	exports.thisModelName = MODEL_NAME;
 	exports.thisSchema = {
@@ -24,8 +31,8 @@ try{
 	};
 
 	exports.thisStatics = {};
-
-	modCommon.extend(modCommon.Model, exports.thisStatics, ActionList , {MODEL_NAME});
+	metaExtend(commonModel, exports.thisStatics, ActionList , {MODEL_NAME});
 }catch(e){
+	//eslint-disable-next-line no-console
 	console.error(e);
 }
