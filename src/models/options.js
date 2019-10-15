@@ -8,6 +8,11 @@ try {
 	];
 	exports.keepNotExtended = false;
 	exports.thisModelName = MODEL_NAME;
+	exports.enrich = {
+		versioning: true,
+		increment: false,
+		validators: true
+	};
 	exports.thisSchema = {
 		id: {
 			type: String,
