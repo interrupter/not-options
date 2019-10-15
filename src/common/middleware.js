@@ -11,12 +11,12 @@ module.exports = function(req, res, next){
 			})
 			.catch((err)=>{
 				App.logger.error('Can\'t find options');
-				App.reporter.report(err);
+				App.report(err);
 				return next();
 			});
 	}else{
 		App.logger.error('Options model not defined');
-		App.reporter.report(
+		App.report(
 			new notError(
 				'Model not defined',
 				{

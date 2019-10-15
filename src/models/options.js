@@ -1,14 +1,10 @@
-try{
+try {
 	const MODEL_NAME = 'Options';
 	const Schema = require('mongoose').Schema;
 	const metaExtend = require('not-meta').extend;
-	const commonModel = require('../common/_model.js');
+	const metaModel = require('not-meta').Model;
 	const ActionList = [
-		'search',
-		'listAndCount',
-		'loadListByIds',
-		'loadList',
-		'getAllAsObject'
+		'search'
 	];
 	exports.keepNotExtended = false;
 	exports.thisModelName = MODEL_NAME;
@@ -30,9 +26,27 @@ try{
 		},
 	};
 
-	exports.thisStatics = {};
-	metaExtend(commonModel, exports.thisStatics, ActionList , {MODEL_NAME});
-}catch(e){
+	exports.thisStatics = {
+		getAllAsObject() {
+			return this.find({
+				'active': true
+			}).exec()
+				.then((results) => {
+					let options = {};
+					if (Array.isArray(results)) {
+						results.forEach((item) => {
+							options[item.id] = item.value;
+						});
+					}
+					return options;
+				});
+		}
+	};
+
+	metaExtend(metaModel, exports.thisStatics, ActionList, {
+		MODEL_NAME
+	});
+} catch (e) {
 	//eslint-disable-next-line no-console
 	console.error(e);
 }
