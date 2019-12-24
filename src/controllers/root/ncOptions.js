@@ -62,7 +62,10 @@ class ncOptions extends notFramework.CRUDController {
 					path: ':value',
 					title: 'Value',
 					sortable: true,
-					searchable: true
+					searchable: true,
+					preprocessor: (value) => {
+						return notFramework.notCommon.escapeHtml(value);
+					}
 				}, {
 					path: ':_id',
 					title: 'Действия',
