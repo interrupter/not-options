@@ -1,5 +1,7 @@
 /* global notFramework */
 
+const ERROR_DEFAULT = 'Что пошло не так.';
+
 import {
   Table as notTable,
   Breadcrumbs,
