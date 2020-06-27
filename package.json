@@ -1,6 +1,6 @@
 {
 	"name": "not-options",
-	"version": "0.0.13",
+	"version": "0.1.0",
 	"description": "not-* family options model in not- environment",
 	"main": "index.js",
 	"scripts": {
@@ -26,7 +26,8 @@
 	},
 	"homepage": "https://github.com/interrupter/not-options#readme",
 	"dependencies": {
-		"not-config": "*"
+		"not-config": "*",
+		"not-bulma": "*"
 	},
 	"devDependencies": {
 		"chai": "*",

@@ -8,7 +8,7 @@ module.exports = {
 			postFix: '/:actionName',
 			data: ['record', 'filter', 'sorter', 'search', 'pager'],
 			rules:[
-				{auth: false},
+				{auth: true},
 				{admin: true}
 			]
 		},

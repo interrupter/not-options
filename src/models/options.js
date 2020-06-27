@@ -6,6 +6,7 @@ try {
 	const ActionList = [
 		'search'
 	];
+	
 	exports.keepNotExtended = false;
 	exports.thisModelName = MODEL_NAME;
 	exports.enrich = {
