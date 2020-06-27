@@ -4,21 +4,23 @@ module.exports = {
 	fields: require('../common/fields.js'),
 	actions:{
 		listAndCount:{
-			method: 'get',
-			postFix: '/:actionName',
-			data: ['record', 'filter', 'sorter', 'search', 'pager'],
+			method: 	'get',
+			postFix: 	'/:actionName',
+			data: 		['record', 'filter', 'sorter', 'search', 'pager'],
 			rules:[
-				{auth: true},
-				{admin: true}
+				{ admin: true },
+				{ auth: true }
 			]
 		},
 		get:{
-			method: 'GET',
-			isArray: false,
-			postFix: '/:record[_id]',
-			data: [],
-			auth: false,
-			admin: false
+			method: 'get',
+			rules:[{
+				auth: true,
+				admin: true
+			},{
+				auth: true
+			}],
+			postFix: '/:record[_id]/:actionName'
 		},
 		getRaw:{
 			method: 'GET',
@@ -28,28 +30,37 @@ module.exports = {
 			auth: true,
 			admin: true
 		},
-		create: {
-			method: 'PUT',
-			isArray: false,
+		create:{
+			method: 'put',
+			rules:[{
+				auth: true,
+				admin: true
+			}],
 			data: ['record'],
-			auth: true,
-			admin: true,
-			formData: true,
-			title: 'Создание опции',
-			fields: {
-				admin: [
-					'id',
-					'value',
-					'active',
-					'submit'
-				]
-			}
+			postFix: '/:actionName'
 		},
-		delete: {
-			method: 'DELETE',
-			postFix: '/:record[_id]',
-			isArray: false,
-			admin: true
+		update:{
+			method: 'post',
+			rules:[{
+				auth: true,
+				admin: true
+			},{
+				auth: true,
+				role: ['admin']
+			},{
+				auth: true
+			}],
+			data: ['record'],
+			postFix: '/:record[_id]/:actionName'
+		},
+		delete:{
+			method: 'delete',
+			rules:[{
+				auth: true,
+				admin: true
+			}],
+			data: ['record'],
+			postFix: '/:record[_id]/:actionName'
 		},
 		update: {
 			method: 'POST',
