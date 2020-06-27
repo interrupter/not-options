@@ -265,7 +265,10 @@ class ncOptions extends notFramework.notController {
           title: 'Активна',
           sortable: true,
           searchable: true,
-          type: 'boolean'
+          type: 'boolean',
+          preprocessor: (value) => {
+            return [{ value }];
+          }
         }, {
           path: ':_id',
           title: 'Действия',
