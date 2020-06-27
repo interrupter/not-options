@@ -1,6 +1,7 @@
 const
   UserActions = [],
   AdminActions = [
+    'create',
     'getRaw',
     'list',
     'listAndCount',
