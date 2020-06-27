@@ -8,8 +8,7 @@ module.exports = {
 			postFix: 	'/:actionName',
 			data: 		['record', 'filter', 'sorter', 'search', 'pager'],
 			rules:[
-				{ admin: true },
-				{ auth: true }
+				{ admin: true }
 			]
 		},
 		get:{
@@ -17,8 +16,6 @@ module.exports = {
 			rules:[{
 				auth: true,
 				admin: true
-			},{
-				auth: true
 			}],
 			postFix: '/:record[_id]/:actionName'
 		},
@@ -44,11 +41,6 @@ module.exports = {
 			rules:[{
 				auth: true,
 				admin: true
-			},{
-				auth: true,
-				role: ['admin']
-			},{
-				auth: true
 			}],
 			data: ['record'],
 			postFix: '/:record[_id]/:actionName'
@@ -61,23 +53,6 @@ module.exports = {
 			}],
 			data: ['record'],
 			postFix: '/:record[_id]/:actionName'
-		},
-		update: {
-			method: 'POST',
-			isArray: false,
-			postFix: '/:record[_id]/update',
-			data: ['record'],
-			auth: true,
-			admin: true,
-			title: 'Редактирование опции',
-			fields: {
-				admin: [
-					'id',
-					'value',
-					'active',
-					'submit'
-				]
-			}
 		},
 	}
 };

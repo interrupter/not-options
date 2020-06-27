@@ -1,11 +1,7 @@
 const
 	UserActions = [],
 	AdminActions = [
-		'get',
 		'getRaw',
-		'create',
-		'delete',
-		'update',
 		'list',
 		'listAndCount',
 		'listAll'
@@ -31,6 +27,139 @@ exports.before = (req) => {
 };
 
 exports.after = ()=>{};
+
+exports._get = async (req, res) => {
+	console.log('root options/get');
+	let targetId = req.params._id,
+		userId = req.user._id;
+	try {
+		const notApp = notNode.Application;
+		let
+			thisModel = notApp.getModel(MODEL_NAME);
+		thisModel.getOne(targetId).then((data) => {
+			res.status(200).json({
+				status: 'ok',
+				result: data
+			});
+		})
+			.catch((e) => {
+				notNode.Application.report(new notError('options._get(db)', {
+					ip: exports.getIP(req),
+					userId,
+					targetId
+				}, e));
+				res.status(500).json({
+					status: 'error',
+					error: e.toString()
+				});
+			});
+	} catch (e) {
+		notNode.Application.report(new notError('options._get', {
+			ip: exports.getIP(req),
+			userId,
+			targetId
+		}, e));
+		res.status(500).json({
+			status: 'error',
+			error: e.toString()
+		});
+	}
+};
+
+
+exports._delete = async (req, res) => {
+	let targetId = req.params._id,
+		userId = req.user._id;
+	try {
+		const notApp = notNode.Application;
+		let thisModel = notApp.getModel(MODEL_NAME);
+
+		let item = await thisModel.findOne({
+			_id: targetId,
+			__latest: true,
+			__closed: false
+		}).exec();
+
+		if (!item) {
+			return res.status(200).json({
+				status: 'ok'
+			});
+		}
+		notApp.logger.log({
+				module: 'options',
+				model: 	MODEL_NAME,
+				action: 'delete',
+				by: 		userId,
+				target: targetId
+			});
+			await item.updateOne({
+				__closed: true
+			}).exec();
+			return res.status(200).json({
+				status: 'ok'
+			});
+	} catch (e) {
+		notNode.Application.report(new notError('options._delete', {
+			ip: exports.getIP(req),
+			userId,
+			targetId
+		}, e));
+		res.status(500).json({
+			status: 'error',
+			error: e.toString()
+		});
+	}
+};
+
+
+exports._update = async (req, res) => {
+	let targetId = req.params._id,
+		userId = req.user._id;
+	try {
+		const notApp = notNode.Application;
+		let thisModel = notApp.getModel(MODEL_NAME);
+
+		let item = await thisModel.findOne({
+			_id: targetId,
+			__latest: true,
+			__closed: false
+		}).exec();
+
+		if (!item) {
+			return res.status(200).json({
+				status: 'error',
+				error: notLocale.say('document_not_found')
+			});
+		}
+		let _id = req.body._id;
+		data = {
+			id: req.body.id,
+			value: req.body.value,
+			active: !!req.body.active,
+		};
+		let updated = await this.findOneAndUpdate({
+			_id: _id
+		}, data, {
+			new: true
+		}).exec();
+
+		return res.status(200).json({
+			status: 'ok',
+			result: updated
+		});
+
+	} catch (e) {
+		notNode.Application.report(new notError('options._update', {
+			ip: exports.getIP(req),
+			userId,
+			targetId
+		}, e));
+		res.status(500).json({
+			status: 'error',
+			error: e.toString()
+		});
+	}
+};
 
 //we have only Admin level routes so, all goes with '_' prefix standart for him
 metaExtend(metaRoute, module.exports, AdminActions, MODEL_OPTIONS, '_');
