@@ -307,57 +307,65 @@ class ncOptions extends notFramework.notController {
     this.app.getWorking('router').navigate('/' + this.getModelURL());
   }
 
-  onCreateFormSubmit(user){
-		this.ui.create.setLoading();
-		this.make.options(user).$create()
-			.then((res)=>{
-				this.log(res);
-				this.showResult(this.ui.create, res);
-				if(!Common.isError(res) && !res.error){
-					setTimeout(() => this.goList(this.app), 3000);
-				}
-			})
-			.catch((e)=>{
-				this.showResult(this.ui.create, e);
-			});
-	}
+  onCreateFormSubmit(user) {
+    this.ui.create.setLoading();
+    this.make.options(user).$create()
+      .then((res) => {
+        this.log(res);
+        this.showResult(this.ui.create, res);
+        if (!Common.isError(res) && !res.error) {
+          setTimeout(() => this.goList(this.app), 3000);
+        }
+      })
+      .catch((e) => {
+        this.showResult(this.ui.create, e);
+      });
+  }
 
-	onUpdateFormSubmit(item){
-		this.ui.update.setLoading();
-		this.make.options(item).$update()
-			.then((res)=>{
-				this.showResult(this.ui.update, res);
-				if(!Common.isError(res) && !res.error){
-					setTimeout(() => this.goList(this.app), 3000);
-				}
-			})
-			.catch((e)=>{
-				this.showResult(this.ui.update, e);
-			});
-	}
+  onUpdateFormSubmit(item) {
+    this.ui.update.setLoading();
+    this.make.options(item).$update()
+      .then((res) => {
+        this.showResult(this.ui.update, res);
+        if (!Common.isError(res) && !res.error) {
+          setTimeout(() => this.goList(this.app), 3000);
+        }
+      })
+      .catch((e) => {
+        this.showResult(this.ui.update, e);
+      });
+  }
 
-	showResult(ui, res) {
-		ui.resetLoading();
-		if(Common.isError(res)){
-			notFramework.notCommon.report(res);
-		}else{
-			if(res.errors && Object.keys(res.errors).length > 0){
-				if (!Array.isArray(res.error)){
-					res.error = [];
-				}
-				Object.keys(res.errors).forEach((fieldName)=>{
-					ui.setFieldInvalid(fieldName, res.errors[fieldName]);
-					res.error.push(...res.errors[fieldName]);
-				});
-			}
-			if(res.error){
-				ui.setFormError(res.error);
-			}
-			if(!res.error ){
-				ui.showSuccess();
-			}
-		}
-	}
+  showResult(ui, res) {
+    ui.resetLoading();
+    if (Common.isError(res)) {
+      notFramework.notCommon.report(res);
+    } else {
+      if (res.errors && Object.keys(res.errors).length > 0) {
+        if (!Array.isArray(res.error)) {
+          res.error = [];
+        }
+        Object.keys(res.errors).forEach((fieldName) => {
+          ui.setFieldInvalid(fieldName, res.errors[fieldName]);
+          res.error.push(...res.errors[fieldName]);
+        });
+      }
+      if (res.error) {
+        ui.setFormError(res.error);
+      }
+      if (!res.error) {
+        ui.showSuccess();
+      }
+    }
+  }
+
+
+  $destroyUI() {
+    for (let name in this.ui) {
+      this.ui[name].$destroy && this.ui[name].$destroy();
+      delete this.ui[name];
+    }
+  }
 }
 
 export default ncOptions;
