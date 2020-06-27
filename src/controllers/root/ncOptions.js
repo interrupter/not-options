@@ -261,6 +261,12 @@ class ncOptions extends notFramework.notController {
             return notFramework.notCommon.escapeHtml(value);
           }
         }, {
+          path: ':active',
+          title: 'Активна',
+          sortable: true,
+          searchable: true,
+          type: 'boolean'
+        }, {
           path: ':_id',
           title: 'Действия',
           type: 'button',

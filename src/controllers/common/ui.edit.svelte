@@ -1,5 +1,7 @@
 <script>
 	import 'bulma-switch';
+
+	import {onMount} from 'svelte';
 	import Common from './index.js';
 
 	const CLASS_ERR = Common.CLASS_ERR;
@@ -67,6 +69,22 @@
 
 	export let item = {};
 
+
+
+	onMount(() => {
+		for(let t in item){
+			if(Object.prototype.hasOwnProperty.call(fields, t)){
+				fields[t].value = item[t];
+			}
+		}
+		for(let t in fields){
+			if (MODES_FIELDS[mode].indexOf(t) === -1){
+				fields[t].enabled = false;
+			}
+		}
+		fields = fields;
+	});
+
 	function collectData(){
 		let result = {};
 		MODES_FIELDS[mode].forEach((fieldname)=>{
@@ -74,7 +92,7 @@
 				result[fieldname]	 = fields[fieldname].value;
 			}
 		});
-		if (mode==='update'){
+		if (mode === 'update'){
 			result._id = item._id;
 		}
 		return result;
