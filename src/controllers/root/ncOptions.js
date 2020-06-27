@@ -20,7 +20,7 @@ const BREADCRUMBS = [{
   url: '/options'
 }];
 
-class ncOptions extends notFramework.Controller {
+class ncOptions extends notFramework.notController {
   constructor(app, params) {
     super(app);
     this.ui = {};
