@@ -7,9 +7,7 @@ module.exports = {
 			method: 	'get',
 			postFix: 	'/:actionName',
 			data: 		['record', 'filter', 'sorter', 'search', 'pager'],
-			rules:[
-				{ admin: true }
-			]
+			rules:[ { admin: true } ]
 		},
 		get:{
 			method: 'get',

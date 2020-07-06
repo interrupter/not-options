@@ -170,7 +170,7 @@ class ncOptions extends notFramework.notController {
         if (res.status === 'ok') {
           this.setBreadcrumbs([{
             title: `Редактирование данных ${res.result.id}`,
-            url: `/user/${params[0]}/update`
+            url: `/options/${params[0]}/update`
           }]);
 
           this.ui.update = new UIEdit({

@@ -1,7 +1,7 @@
 import validator from 'validator';
+import ModelFields from '../../common/fields.js';
 
 export default class Common{
-
 	static DEFAULT_USER_AFTER_LOGIN_URL = '/dashboard';
 	static DEFAULT_REDIRECT_TIMEOUT = 5000;
 
@@ -15,7 +15,7 @@ export default class Common{
   static isError(e){
     return e instanceof Error;
   }
-	
+
   static validateField(field, value, fields){
 		let errors = [];
 		switch(field){
@@ -42,20 +42,8 @@ export default class Common{
 		fields=fields;
 		return res;
 	}
-	static FIELDS = {
-		id:{
-			label: 'Название',
-			placeholder: 'Идентификатор настройки',
-		},
-		active:{
-			label: 'Активна',
-			placeholder: '',
-		},
-		value:{
-			label: 'Значение',
-			placeholder: 'До 10240 знаков',
-		}
-	}
+
+	static FIELDS = ModelFields;
 	static fieldInit(type, mutation = {}){
 		let field = {
 			label: '',

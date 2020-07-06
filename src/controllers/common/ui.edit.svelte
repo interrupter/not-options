@@ -245,7 +245,7 @@
 {/if}
 <div class="container">
 	{#if fields.id.enabled}
-	<div class="field user-form-field edit-form-id">
+	<div class="field edit-form-field edit-form-id">
 		<label class="label">{fields.id.label}</label>
 		<div class="control has-icons-right">
 			<input class="input {idClasses}" type="text" name="id"
@@ -271,10 +271,10 @@
 	{/if}
 
 	{#if fields.value.enabled}
-	<div class="user-form-field edit-form-value field">
+	<div class="edit-form-field edit-form-value field">
 		<label class="label">{fields.value.label}</label>
 		<div class="control has-icons-right">
-			<textarea invalid="{validationErrors.email}" on:change={onChange} on:input={onInput}
+			<textarea invalid="{validationErrors.value}" on:change={onChange} on:input={onInput}
 			class="textarea {valueClasses}"
 			required={fields.value.required}
 			bind:value={fields.value.value}
@@ -302,9 +302,9 @@
 	{/if}
 
 	{#if fields.active.enabled}
-	<div class="user-form-field user-login-form-active field">
+	<div class="edit-form-field edit-form-active field">
 			<input
-				id="user-login-form-active-field"
+				id="edit-form-active-field"
 				class="switch is-rounded is-success "
 				bind:checked={fields.active.value}
 				required={fields.active.required}
@@ -313,7 +313,7 @@
 				name="active" type="checkbox"
 				aria-controls="input-field-helper-active" aria-describedby="input-field-helper-active"
 				/>
-		<label class="label" for="user-login-form-active-field">{fields.active.label}</label>
+		<label class="label" for="edit-form-active-field">{fields.active.label}</label>
 		<p class="help {activeClasses}" id="input-field-helper-active">
 			{#if !(fields.active.validated && fields.active.valid) }
 			{activeHelper}
