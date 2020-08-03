@@ -9,10 +9,15 @@ let manifest = {
 			},
 		]
 	},
-	menu:[{
-		title: 	'Настройки',
-		url: 	'/options'
-	}]
+	menu:{
+		side: {
+			items:[{
+				section: 'system',
+				title: 	'Настройки',
+				url: 	'/options'
+			}]
+		}
+	}
 };
 
 export {
