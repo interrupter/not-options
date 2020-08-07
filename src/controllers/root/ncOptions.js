@@ -2,6 +2,7 @@
 
 const ERROR_DEFAULT = 'Что пошло не так.';
 
+import { notController } from 'not-framework';
 import {
   Table as notTable,
   Breadcrumbs,
@@ -22,7 +23,7 @@ const BREADCRUMBS = [{
   url: '/options'
 }];
 
-class ncOptions extends notFramework.notController {
+class ncOptions extends notController {
   constructor(app, params) {
     super(app);
     this.ui = {};
