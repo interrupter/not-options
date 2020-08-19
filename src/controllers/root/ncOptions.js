@@ -1,12 +1,11 @@
-/* global notFramework */
-
 const ERROR_DEFAULT = 'Что пошло не так.';
 
-import { notController } from 'not-framework';
 import {
   Table as notTable,
   Breadcrumbs,
-  UIError
+  UIError,
+  notController,
+  notCommon
 } from 'not-bulma';
 
 const LABELS = {
@@ -79,7 +78,7 @@ class ncOptions extends notController {
       } else if (params[1] === 'update') {
         return this.runUpdate(params);
       } else {
-        let routeRunnerName = 'run' + notFramework.notCommon.capitalizeFirstLetter(params[1]);
+        let routeRunnerName = 'run' + notCommon.capitalizeFirstLetter(params[1]);
         if (this[routeRunnerName] && typeof this[routeRunnerName] === 'function') {
           return this[routeRunnerName](params);
         }
@@ -138,7 +137,7 @@ class ncOptions extends notController {
           this.ui.details = new UIDetails({
             target: this.els.main,
             props: {
-              item: notFramework.notCommon.stripProxy(res.result)
+              item: notCommon.stripProxy(res.result)
             }
           });
         } else {
@@ -178,7 +177,7 @@ class ncOptions extends notController {
             target: this.els.main,
             props: {
               mode: 'update',
-              item: notFramework.notCommon.stripProxy(res.result)
+              item: notCommon.stripProxy(res.result)
             }
           });
           this.ui.update.$on('update', (ev) => {
@@ -259,7 +258,7 @@ class ncOptions extends notController {
           sortable: true,
           searchable: true,
           preprocessor: (value) => {
-            return notFramework.notCommon.escapeHtml(value);
+            return notCommon.escapeHtml(value);
           }
         }, {
           path: ':active',
@@ -351,7 +350,7 @@ class ncOptions extends notController {
   showResult(ui, res) {
     ui.resetLoading();
     if (Common.isError(res)) {
-      notFramework.notCommon.report(res);
+      notCommon.report(res);
     } else {
       if (res.errors && Object.keys(res.errors).length > 0) {
         if (!Array.isArray(res.error)) {
