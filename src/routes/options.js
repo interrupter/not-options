@@ -11,8 +11,13 @@ const
   MODEL_OPTIONS = {
     MODEL_NAME,
     MODEL_TITLE: 'Опции',
-    populate: {}
+    populate: {},
+    RESPONSE:{
+      full: ['get','getRaw','create']
+    },
   };
+
+const log = require('not-log')(module, `${MODEL_NAME} router`);
 
 exports.getIP = (req) => {
   return req.headers['x-forwarded-for'] ||
@@ -41,7 +46,7 @@ exports.before = (req) => {
 exports.after = () => {};
 
 exports._get = async (req, res) => {
-  console.log('root options/get');
+  log.debug('root options/get');
   let targetId = req.params._id,
     userId = req.user._id;
   try {
@@ -55,6 +60,7 @@ exports._get = async (req, res) => {
         });
       })
       .catch((e) => {
+        log.error(e);
         notNode.Application.report(new notError('options._get(db)', {
           ip: exports.getIP(req),
           userId,
@@ -66,6 +72,7 @@ exports._get = async (req, res) => {
         });
       });
   } catch (e) {
+    log.error(e);
     notNode.Application.report(new notError('options._get', {
       ip: exports.getIP(req),
       userId,

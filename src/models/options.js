@@ -1,36 +1,47 @@
+const log = require('not-log')(module, 'Options Model');
+const Schema = require('mongoose').Schema;
 try {
 	const MODEL_NAME = 'Options';
-	const Schema = require('mongoose').Schema;
-	const metaExtend = require('not-meta').extend;
-	const metaModel = require('not-meta').Model;
-	const ActionList = [
-		'search'
+	const initFields = require('not-node').Fields.initFields;
+
+	const FIELDS = [
+		[
+			'id',
+			{
+				searchable: true
+			},
+			'codeName'
+		],
+		[
+			'value',
+			{
+				type: Schema.Types.Mixed,
+				searchable: true,
+				required: true
+			}
+		],
+		[
+			'active',
+			{
+				default: true
+			}
+		]
 	];
-	
+
 	exports.keepNotExtended = false;
 	exports.thisModelName = MODEL_NAME;
+	exports.thisSchema = initFields(FIELDS, 'model');
+
 	exports.enrich = {
 		versioning: true,
-		increment: false,
+		increment: true,
 		validators: true
 	};
-	exports.thisSchema = {
-		id: {
-			type: String,
-			searchable: true,
-			required: true
-		},
-		value: {
-			type: Schema.Types.Mixed,
-			searchable: true,
-			required: true
-		},
-		active: {
-			type: Boolean,
-			required: true,
-			default: true
-		},
-	};
+
+	const metaExtend = require('not-meta').extend;
+	const metaModel = require('not-meta').Model;
+
+	const ActionList = ['search'];
 
 	exports.thisStatics = {
 		getAllAsObject() {
@@ -53,6 +64,5 @@ try {
 		MODEL_NAME
 	});
 } catch (e) {
-	//eslint-disable-next-line no-console
-	console.error(e);
+	log.error(e);
 }

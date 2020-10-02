@@ -2,7 +2,7 @@ try{
 	const path = require('path'),
 		log = require('not-log')(module),
 		middleware = require('./src/common').middleware,
-		parts = ['templates', 'controllers','locales', 'models', 'routes'];
+		parts = ['controllers','locales', 'models', 'routes'];
 
 	let paths = {};
 
