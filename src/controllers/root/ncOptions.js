@@ -8,15 +8,18 @@ const LABELS = {
 	single: 'Настройка',
 };
 
+const MODEL = 'options';
+
 class ncOptions extends ncCRUD {
-	constructor(app, params) {
-		super(app);
-		this.setModuleName('options');
+	constructor(app, params, schemes) {
+		super(app, MODEL);
+		this.setModuleName('');
+		this.setModelName(MODEL);
 		this.setOptions('names', LABELS);
 		this.setOptions('Validators', Validators);
 		this.setOptions('params', params);
 		this.setOptions('role', 'root');
-		this.log('options interface');
+		this.setOptions('urlSchemes', schemes);
 		this.setOptions('list', {
 			fields: [{
 				path: ':optionsID',
@@ -69,7 +72,7 @@ class ncOptions extends ncCRUD {
 	}
 
 	createDefault() {
-		let newRecord = this.make[this.getModuleName()]({
+		let newRecord = this.make[this.getModelName()]({
 			'_id': null,
 			id: LABELS.single,
 			value: '',
