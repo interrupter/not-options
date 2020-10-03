@@ -5,21 +5,8 @@ try {
 	const initFields = require('not-node').Fields.initFields;
 
 	const FIELDS = [
-		[
-			'id',
-			{
-				searchable: true
-			},
-			'codeName'
-		],
-		[
-			'value',
-			{
-				type: Schema.Types.Mixed,
-				searchable: true,
-				required: true
-			}
-		],
+		'id',
+		'value',
 		[
 			'active',
 			{
