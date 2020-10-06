@@ -42,6 +42,11 @@ exports.before = (req) => {
   };
   query.search.process(req, optionsSchema);
   query.pager.process(req);
+  if(req.body && Object.prototype.hasOwnProperty.call(req.body, 'active')){
+    if((req.body.active !== true) && (req.body.active !== false)){
+      req.body.active = false;
+    }
+  }
 };
 
 exports.after = () => {};
