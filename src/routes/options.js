@@ -28,6 +28,7 @@ exports.getIP = (req) => {
 
 const notNode = require('not-node');
 const notError = require('not-error').notError;
+const notLocale = require('not-locale');
 const query = require('not-filter');
 const metaExtend = require('not-meta').extend;
 const metaRoute = require('not-meta').Route;

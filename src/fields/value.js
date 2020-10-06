@@ -7,9 +7,9 @@ module.exports = {
     required: true
   },
   ui:     {
-    component: 'UITextfield',
-    placeholder: 'Настройки',
-    label: 'Значение',
-    readonly: true
+    component:    'UITextarea',
+    placeholder:  'Настройки',
+    label:        'Значение',
+    readonly:     false
   },
 };
