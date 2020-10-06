@@ -41,7 +41,12 @@ class ncOptions extends ncCRUD {
 				title: 'Активна',
 				type: 'boolean',
 				searchable: true,
-				sortable: true
+				sortable: true,
+				preprocessor: (value) => {
+					return [{
+						value
+					}];
+				}
 			}, {
 				path: ':_id',
 				title: 'Действия',
