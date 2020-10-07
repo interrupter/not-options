@@ -33,7 +33,9 @@ try {
 	exports.thisStatics = {
 		getAllAsObject() {
 			return this.find({
-				'active': true
+				'active': true,
+				__latest: true,
+				__closed: false
 			}).exec()
 				.then((results) => {
 					let options = {};
