@@ -1,5 +1,4 @@
 const log = require('not-log')(module, 'Options Model');
-const Schema = require('mongoose').Schema;
 try {
 	const MODEL_NAME = 'Options';
 	const initFields = require('not-node').Fields.initFields;
@@ -31,7 +30,7 @@ try {
 	const ActionList = ['search'];
 
 	exports.thisStatics = {
-		getAllAsObject() {
+		getAllAsObject(whitelist = false) {
 			return this.find({
 				'active': true,
 				__latest: true,
@@ -41,6 +40,9 @@ try {
 					let options = {};
 					if (Array.isArray(results)) {
 						results.forEach((item) => {
+							if(whitelist && Array.isArray(whitelist)){
+								if(!whitelist.includes(item.id)){return;}
+							}
 							options[item.id] = item.value;
 						});
 					}
