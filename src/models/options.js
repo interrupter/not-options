@@ -55,11 +55,10 @@ try {
 			let existed = res.map(itm=>itm.id);
 			for(let name of names){
 				if (!existed.includes(name)){
-					let toAdd = new this({
+					await this.add({
 						id: name,
 						...opts[name]
 					});
-					await toAdd.save();
 				}
 			}
 		}
