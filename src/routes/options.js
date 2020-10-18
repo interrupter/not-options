@@ -151,7 +151,7 @@ async function updateDocument(doc){
   }
 
   let updated = await thisModel.findOneAndUpdate({
-    _id
+    _id:       doc._id
   }, {
     value: doc.value,
     active: !!doc.active
@@ -270,8 +270,7 @@ exports._updateForModule = async (req, res)=>{
         });
       }else{
         res.status(200).json({
-          status: 'ok',
-          result: results
+          status: 'ok'
         });
       }
 
