@@ -58,7 +58,7 @@ module.exports = {
 		},
 		listAllForModule:{
 			method: 	'get',
-			postFix: 	'/:actionName/:moduleName',
+			postFix: 	'/:actionName/:record[moduleName]',
 			data: 		['record', 'filter', 'sorter', 'search', 'pager'],
 			rules:[ { admin: true } ],
 			fields: [
