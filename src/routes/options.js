@@ -145,7 +145,7 @@ exports._update = async (req, res) => {
     let thisModel = notApp.getModel(MODEL_NAME);
 
     let item = await thisModel.findOne({
-      _id: targetId,
+      id: targetId,
       __latest: true,
       __closed: false
     }).exec();
@@ -156,6 +156,7 @@ exports._update = async (req, res) => {
         error: notLocale.say('document_not_found')
       });
     }
+
     let _id = req.body._id;
     data = {
       id: req.body.id,
@@ -185,6 +186,38 @@ exports._update = async (req, res) => {
     });
   }
 };
+
+exports._listAllForModule = async (req, res)=>{
+  let moduleName = req.params.moduleName,
+    userId = req.user._id;
+  try{
+      if((!moduleName) || (moduleName.length < 1)){
+        throw new Error('moduleName is now valid');
+      }
+      const notApp = notNode.Application;
+      let thisModel = notApp.getModel(MODEL_NAME);
+      let regexp = new RegExp('^' + moduleName + ':');
+      let rawRes = await thisModel.find({ id: regexp, __closed: false, __latest: true }).exec();
+      let results = {};
+      rawRes.forEach((itm)=>{
+        results[itm.id.replace(moduleName+':', '')] = itm;
+      });
+      res.status(200).json({
+        status: 'ok',
+        result: results
+      });
+  }catch(e){
+    notNode.Application.report(new notError('options._listAllForModule', {
+      ip: exports.getIP(req),
+      userId,
+      moduleName
+    }, e));
+    res.status(500).json({
+      status: 'error',
+      error: e.toString()
+    });
+  }
+}
 
 //we have only Admin level routes so, all goes with '_' prefix standart for him
 metaExtend(metaRoute, module.exports, AdminActions, MODEL_OPTIONS, '_');

@@ -54,6 +54,7 @@ try {
 	metaExtend(metaModel, exports.thisStatics, ActionList, {
 		MODEL_NAME
 	});
+	
 } catch (e) {
 	log.error(e);
 }
