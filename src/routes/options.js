@@ -252,7 +252,7 @@ exports._updateForModule = async (req, res)=>{
       let errCnt = 0;
       for(let t in options){
         try{
-          updateDocument(options[t]);
+          await updateDocument(options[t]);
         }catch(e){
           errCnt++;
           log.error(e);
