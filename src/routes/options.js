@@ -136,16 +136,41 @@ exports._delete = async (req, res) => {
   }
 };
 
+async function updateDocument(doc){
+  const notApp = notNode.Application;
+  let thisModel = notApp.getModel(MODEL_NAME);
+
+  let item = await thisModel.findOne({
+    _id:       doc._id,
+    __latest: true,
+    __closed: false
+  }).exec();
+
+  if (!item) {
+    throw new notError(notLocale.say('document_not_found'), {doc});
+  }
+
+  let updated = await thisModel.findOneAndUpdate({
+    _id
+  }, {
+    value: doc.value,
+    active: !!doc.active
+  }, {
+    new: true
+  }).exec();
+  return updated;
+}
 
 exports._update = async (req, res) => {
   let targetId = req.params._id,
+    _id = req.body._id,
     userId = req.user._id;
   try {
     const notApp = notNode.Application;
     let thisModel = notApp.getModel(MODEL_NAME);
 
     let item = await thisModel.findOne({
-      id: targetId,
+      _id: targetId,
       __latest: true,
       __closed: false
     }).exec();
@@ -156,15 +181,13 @@ exports._update = async (req, res) => {
         error: notLocale.say('document_not_found')
       });
     }
-
-    let _id = req.body._id;
     data = {
-      id: req.body.id,
       value: req.body.value,
       active: !!req.body.active,
     };
+
     let updated = await thisModel.findOneAndUpdate({
-      _id: _id
+      _id
     }, data, {
       new: true
     }).exec();
@@ -173,7 +196,6 @@ exports._update = async (req, res) => {
       status: 'ok',
       result: updated
     });
-
   } catch (e) {
     notNode.Application.report(new notError('options._update', {
       ip: exports.getIP(req),
@@ -206,6 +228,53 @@ exports._listAllForModule = async (req, res)=>{
         status: 'ok',
         result: results
       });
+  }catch(e){
+    notNode.Application.report(new notError('options._listAllForModule', {
+      ip: exports.getIP(req),
+      userId,
+      moduleName
+    }, e));
+    res.status(500).json({
+      status: 'error',
+      error: e.toString()
+    });
+  }
+}
+
+exports._updateForModule = async (req, res)=>{
+  let moduleName = req.params.moduleName,
+    options = req.body.options,
+    userId = req.user._id;
+  try{
+      if((!moduleName) || (moduleName.length < 1)){
+        throw new Error('moduleName is now valid');
+      }
+      let errCnt = 0;
+      for(let t in options){
+        try{
+          updateDocument(options[t]);
+        }catch(e){
+          errCnt++;
+          log.error(e);
+          notNode.Application.report(new notError('options._updateForModule', {
+            ip: exports.getIP(req),
+            userId,
+            moduleName
+          }, e));
+        }
+      }
+      if(errCnt > 0){
+        res.status(500).json({
+          status: 'error',
+          message: ''
+        });
+      }else{
+        res.status(200).json({
+          status: 'ok',
+          result: results
+        });
+      }
+
   }catch(e){
     notNode.Application.report(new notError('options._listAllForModule', {
       ip: exports.getIP(req),

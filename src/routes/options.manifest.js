@@ -69,6 +69,19 @@ module.exports = {
 				'active'
 			],
 		},
+		updateForModule:{
+			method: 	'post',
+			postFix: 	'/:actionName/:record[moduleName]',
+			data: 		['record', 'filter', 'sorter', 'search', 'pager'],
+			rules:[ { admin: true } ],
+			fields: [
+				'_id',
+				'optionsID',
+				'id',
+				'value',
+				'active'
+			],
+		},
 		get:{
 			method: 'get',
 			rules:[{
