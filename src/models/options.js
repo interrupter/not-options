@@ -48,13 +48,27 @@ try {
 					}
 					return options;
 				});
+		},
+		async initIfNotExists(opts){
+			let names = Object.keys(opts);
+			let res = await this.find({ __closed: false, __latest: true, id: {$in: names}}).exec();
+			let existed = res.map(itm=>itm.id);
+			for(let name of names){
+				if (!existed.includes(name)){
+					let toAdd = new this({
+						id: name,
+						...opts[name]
+					});
+					await toAdd.save();
+				}
+			}
 		}
 	};
 
 	metaExtend(metaModel, exports.thisStatics, ActionList, {
 		MODEL_NAME
 	});
-	
+
 } catch (e) {
 	log.error(e);
 }
