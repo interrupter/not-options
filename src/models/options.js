@@ -28,8 +28,55 @@ try {
 	const metaModel = require('not-meta').Model;
 
 	const ActionList = ['search'];
+	const MODULE_OPTIONS_PREFIX = 'MODULE_';
 
 	exports.thisStatics = {
+		getModuleOptionsName(moduleName){
+			return MODULE_OPTIONS_PREFIX + moduleName.toLowerCase();
+		},
+		readModuleOptions(moduleName){
+			let name = this.getModuleOptionsName(moduleName);
+			return this.findOne({
+				'id': 		name,
+				'active': true,
+				__latest: true,
+				__closed: false
+			}).exec()
+				.then((result) => {
+				if (result) {
+					try{
+						return JSON.parse(result.value);
+					}catch(e){
+						log.error(e);
+						return {};
+					}
+				}else{
+					return {};
+				}
+			});
+		},
+		async writeModuleOptions(moduleName, options){
+			let name = this.getModuleOptionsName(moduleName);
+			let value = JSON.stringify(options);
+			await thisModel.updateOne({
+					id: name,
+					__latest: true,
+					__closed: false
+				},
+				{
+					value,
+				}
+			).exec();
+			let item = await thisModel.findOne({id: name,__latest: true,__closed: false}).exec();
+			if (typeof item !== 'undefined' && item !== null) {
+				return thisModel.saveVersion(item._id);
+			} else {
+				throw new notError('-options for module version not saved, empty response', {
+					id: name,
+					item
+				});
+			}
+		},
 		getAllAsObject(whitelist = false) {
 			return this.find({
 				'active': true,
