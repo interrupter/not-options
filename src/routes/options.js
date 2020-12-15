@@ -209,7 +209,7 @@ exports._update = async (req, res) => {
   }
 };
 
-exports._listAllForModule = async (req, res)=>{
+exports._getForModule = async (req, res)=>{
   let moduleName = req.params.moduleName,
     userId = req.user._id;
   try{
@@ -217,19 +217,13 @@ exports._listAllForModule = async (req, res)=>{
         throw new Error('moduleName is now valid');
       }
       const notApp = notNode.Application;
-      let thisModel = notApp.getModel(MODEL_NAME);
-      let regexp = new RegExp('^' + moduleName + ':');
-      let rawRes = await thisModel.find({ id: regexp, __closed: false, __latest: true }).exec();
-      let results = {};
-      rawRes.forEach((itm)=>{
-        results[itm.id.replace(moduleName+':', '')] = itm;
-      });
+      let results = await notApp.getModel(MODEL_NAME).readModuleOptions(moduleName);
       res.status(200).json({
         status: 'ok',
         result: results
       });
   }catch(e){
-    notNode.Application.report(new notError('options._listAllForModule', {
+    notNode.Application.report(new notError('options._getForModule', {
       ip: exports.getIP(req),
       userId,
       moduleName
@@ -249,33 +243,14 @@ exports._updateForModule = async (req, res)=>{
       if((!moduleName) || (moduleName.length < 1)){
         throw new Error('moduleName is now valid');
       }
-      let errCnt = 0;
-      for(let t in options){
-        try{
-          await updateDocument(options[t]);
-        }catch(e){
-          errCnt++;
-          log.error(e);
-          notNode.Application.report(new notError('options._updateForModule', {
-            ip: exports.getIP(req),
-            userId,
-            moduleName
-          }, e));
-        }
-      }
-      if(errCnt > 0){
-        res.status(500).json({
-          status: 'error',
-          message: ''
-        });
-      }else{
-        res.status(200).json({
-          status: 'ok'
-        });
-      }
+      const notApp = notNode.Application;
+      await notApp.getModel(MODEL_NAME).writeModuleOptions(moduleName, options);
+      res.status(200).json({
+        status: 'ok'
+      });
 
   }catch(e){
-    notNode.Application.report(new notError('options._listAllForModule', {
+    notNode.Application.report(new notError('options._updateForModule', {
       ip: exports.getIP(req),
       userId,
       moduleName

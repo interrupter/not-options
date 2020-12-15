@@ -56,31 +56,17 @@ module.exports = {
 				'active'
 			],
 		},
-		listAllForModule:{
+		getForModule:{
 			method: 	'get',
 			postFix: 	'/:actionName/:record[moduleName]',
 			data: 		['record', 'filter', 'sorter', 'search', 'pager'],
-			rules:[ { admin: true } ],
-			fields: [
-				'_id',
-				'optionsID',
-				'id',
-				'value',
-				'active'
-			],
+			rules:		[ { admin: true } ]
 		},
 		updateForModule:{
 			method: 	'post',
 			postFix: 	'/:actionName/:record[moduleName]',
 			data: 		['record', 'filter', 'sorter', 'search', 'pager'],
-			rules:[ { admin: true } ],
-			fields: [
-				'_id',
-				'optionsID',
-				'id',
-				'value',
-				'active'
-			],
+			rules:		[ { admin: true } ]
 		},
 		get:{
 			method: 'get',
