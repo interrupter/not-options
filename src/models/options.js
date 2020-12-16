@@ -2,6 +2,7 @@ const log = require('not-log')(module, 'Options Model');
 try {
 	const MODEL_NAME = 'Options';
 	const initFields = require('not-node').Fields.initFields;
+	const notError = require('not-error').notError;
 
 	const FIELDS = [
 		'id',
@@ -58,22 +59,35 @@ try {
 		async writeModuleOptions(moduleName, options){
 			let name = this.getModuleOptionsName(moduleName);
 			let value = JSON.stringify(options);
-			await thisModel.updateOne({
-					id: name,
-					__latest: true,
-					__closed: false
-				},
-				{
-					value,
+			let exists = await this.countWithFilter({
+				id: name,
+				__latest: true,
+				__closed: false
+			});
+			if(exists){
+				await this.updateOne({
+						id: name,
+						__latest: true,
+						__closed: false
+					},
+					{
+						value,
+					}
+				).exec();
+				let item = await this.findOne({id: name,__latest: true,__closed: false}).exec();
+				if (typeof item !== 'undefined' && item !== null) {
+					return this.saveVersion(item._id);
+				} else {
+					throw new notError('-options for module version not saved, empty response', {
+						id: name,
+						item
+					});
 				}
-			).exec();
-			let item = await thisModel.findOne({id: name,__latest: true,__closed: false}).exec();
-			if (typeof item !== 'undefined' && item !== null) {
-				return thisModel.saveVersion(item._id);
-			} else {
-				throw new notError('-options for module version not saved, empty response', {
+			}else{
+				this.add({
 					id: name,
-					item
+					value,
+					active: true
 				});
 			}
 		},

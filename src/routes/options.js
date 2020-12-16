@@ -245,10 +245,10 @@ exports._updateForModule = async (req, res)=>{
       }
       const notApp = notNode.Application;
       await notApp.getModel(MODEL_NAME).writeModuleOptions(moduleName, options);
+      notNode.Application.emit(`module:${moduleName}:options:updated`);
       res.status(200).json({
         status: 'ok'
       });
-
   }catch(e){
     notNode.Application.report(new notError('options._updateForModule', {
       ip: exports.getIP(req),
