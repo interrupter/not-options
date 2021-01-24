@@ -11,6 +11,19 @@ module.exports = {
 	url: '/api/:modelName',
 	fields: FIELDS,
 	actions:{
+		export:{
+			method: 'get',
+			postFix: '/:actionName',
+			title: 'form_title_export',
+			rules: [{ admin: true }]
+		},
+		import:{
+			method: 'put',
+			data: ['record'],
+			postFix: '/:actionName',
+			title: 'form_title_import',
+			rules: [{ admin: true }]
+		},
 		create:{
 			method: 'put',
 			rules:[{

@@ -262,6 +262,59 @@ exports._updateForModule = async (req, res)=>{
   }
 }
 
+
+function getAppName(){
+  return notNode.Application.getEnv('name');
+}
+
+function getOptionsFilename(){
+  let appname = getAppName();
+  let date = Date.now().toISOString().split('.')[0];
+  return `${appname}.options.${date}.json`;
+}
+
+
+
+exports._import = async(req, res)=>{
+  try{
+    let data = JSON.parse(req.body.options);
+    await notNode.Application.getModel(MODEL_NAME).bulkImport(data);
+    res.status(200);
+    res.json({
+      status: 'ok'
+    });
+    res.end();
+  }catch(e){
+    notNode.Application.report(new notError('options._import', {
+      ip: exports.getIP(req)
+    }, e));
+    res.status(500).json({
+      status: 'error',
+      error: e.toString()
+    });
+  }
+}
+
+exports._export = async(req, res)=>{
+  try{
+    //taking only last versions of documents
+    let data = await notNode.Application.getModel(MODEL_NAME).getAllAsObject();
+    let fname = getOptionsFilename();
+    res.status(200);
+    res.append('Content-Disposition',`inline; filename="${fname}"`);
+    res.json(data);
+    res.end();
+  }catch(e){
+    notNode.Application.report(new notError('options._export', {
+      ip: exports.getIP(req)
+    }, e));
+    res.status(500).json({
+      status: 'error',
+      error: e.toString()
+    });
+  }
+}
+
 //we have only Admin level routes so, all goes with '_' prefix standart for him
 metaExtend(metaRoute, module.exports, AdminActions, MODEL_OPTIONS, '_');
 metaExtend(metaRoute, module.exports, UserActions, MODEL_OPTIONS, '');

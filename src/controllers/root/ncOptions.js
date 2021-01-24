@@ -85,6 +85,15 @@ class ncOptions extends ncCRUD {
 		});
 		return newRecord;
 	}
+
+	runExport(){
+
+	}
+
+	runImport(){
+
+	}
+
 }
 
 export default ncOptions;
