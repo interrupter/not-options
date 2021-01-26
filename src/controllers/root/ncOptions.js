@@ -146,6 +146,9 @@ class ncOptions extends ncCRUD {
     }).$import();
   }
 
+  getItemTitle(item){
+    return `${item.optionsID}#${item.id}`;
+  }
 
 }
 
