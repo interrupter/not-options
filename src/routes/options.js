@@ -269,7 +269,7 @@ function getAppName(){
 
 function getOptionsFilename(){
   let appname = getAppName();
-  let date = Date.now().toISOString().split('.')[0];
+  let date = new Date().toISOString().split('.')[0];
   return `${appname}.options.${date}.json`;
 }
 
@@ -278,7 +278,7 @@ function getOptionsFilename(){
 exports._import = async(req, res)=>{
   try{
     let data = JSON.parse(req.body.options);
-    await notNode.Application.getModel(MODEL_NAME).bulkImport(data);
+    await notNode.Application.getModel(MODEL_NAME).bulkImport(data, true);
     res.status(200);
     res.json({
       status: 'ok'
@@ -298,7 +298,7 @@ exports._import = async(req, res)=>{
 exports._export = async(req, res)=>{
   try{
     //taking only last versions of documents
-    let data = await notNode.Application.getModel(MODEL_NAME).getAllAsObject();
+    let data = await notNode.Application.getModel(MODEL_NAME).bulkExport();
     let fname = getOptionsFilename();
     res.status(200);
     res.append('Content-Disposition',`inline; filename="${fname}"`);

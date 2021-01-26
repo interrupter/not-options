@@ -134,6 +134,17 @@ try {
         }
       }
     },
+    async bulkExport(){
+      return this.listAll();
+    },
+    async closeExisting(){
+      //closing existing records
+      let all = await this.listAll();
+      for (let rec of Array.from(all)) {
+        await rec.close();
+      }
+      log.log(`Existing records closed`);
+    },
     /**
     * import of many docs in one go,
     * if close==true, all existing will be closed
@@ -146,24 +157,26 @@ try {
       data = Array.from(data);
       let len = data.length;
       if (close) {
-        //closing existing records
-        let all = await this.listAll();
-        for (let t in Array.from(all)) {
-          await all[t].close();
-        }
-        log.log(`Existing records closed`);
+        await this.closeExisting();
       }
       //adding new or modifing existing
-      for (let t in Array.from(data)) {
+      for (let itm of Array.from(data)) {
         //keep track of maximum ID, to later change in 'inc' collection
         if (itm.optionsID > maxID) {
           maxID = itm.optionsID;
         }
+        delete itm._id;
+        itm._versions;
       }
-      await this.insertMany();
+      await this.insertMany(data);
       log.log(`Imported ${len}`);
       await Increment.rebase(MODEL_NAME, maxID + 1);
       log.log(`ID cursor moved to ${maxID}`);
+    },
+    async importAsObject(obj, close = false){
+      if (close) {
+        await this.closeExisting();
+      }
     }
   };
 
