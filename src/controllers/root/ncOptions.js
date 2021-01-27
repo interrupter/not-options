@@ -132,12 +132,27 @@ class ncOptions extends ncCRUD {
         try {
           let res = await this.requestImport(ev.detail.options);
           this.log(res);
+          if(res.status === 'ok'){
+            if(res.result && res.result.info){
+              this.ui.import.setInfo(res.result.info);
+              this.afterImportSuccess(res.result);
+            }
+          }else{
+            this.error(res.error);
+            this.ui.import.setError(res.error);
+          }
         } catch (e) {
+          this.ui.import.setError(e.message);
           this.error(e);
         }
-        this.closeImportPopup();
       }
     });
+  }
+
+  afterImportSuccess(result){
+    let delay = parseInt(result.shutdown) + 2000;
+    this.refresh(delay);
+    setTimeout(()=>this.closeImportPopup(), delay);
   }
 
   requestImport(data) {

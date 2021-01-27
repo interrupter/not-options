@@ -2,6 +2,10 @@
   import { createEventDispatcher } from 'svelte';
   import { UIOverlay } from 'not-bulma';
 
+  let has_error = false;
+  let error = '';
+  let has_info = false;
+  let info = '';
   let show = true;
   let closeOnClick = false;
 	let closeButton = false;
@@ -31,6 +35,17 @@
     }
   }
 
+  export function setError(message){
+    has_error = true;
+    error = message;
+    importing = false;
+  }
+
+  export function setInfo(message){
+    has_info = true;
+    info = message;
+  }
+
   async function importFile(){
     try{
       if (fileField.files.length > 0){
@@ -47,9 +62,8 @@
 
 
 <UIOverlay on:reject="{overlayClosed}" bind:this={overlay} show={true} {closeOnClick} {closeButton}>
-  <div class="form-paper box">
+  <div class="form-paper box {has_error}">
     <h4 class="title is-4">Импорт настроек из файла</h4>
-
     <div class="file is-boxed file-select-box">
       <label class="file-label">
         <input class="file-input" type="file" name="optionsToImport" on:change={fileNameUpdate} bind:this="{fileField}" accept=".json" multiple="false">
@@ -67,6 +81,14 @@
         </span>
       </label>
     </div>
+
+    {#if has_error}
+    <div class="notification is-danger">{error}</div>
+    {/if}
+
+    {#if has_info}
+    <div class="notification is-info">{info}</div>
+    {/if}
 
     <div class="field is-grouped is-grouped-centered">
       <p class="control">

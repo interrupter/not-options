@@ -280,10 +280,16 @@ exports._import = async(req, res)=>{
     let data = JSON.parse(req.body.options);
     await notNode.Application.getModel(MODEL_NAME).bulkImport(data, true);
     res.status(200);
+    const timeout = 5000;
     res.json({
-      status: 'ok'
+      status: 'ok',
+      result: {
+        shutdown: timeout,
+        info: `Сервер перезагрузится через ${timeout}мс, страница обновится автоматически`
+      }
     });
     res.end();
+    notNode.Application.shutdown(timeout);
   }catch(e){
     notNode.Application.report(new notError('options._import', {
       ip: exports.getIP(req)
