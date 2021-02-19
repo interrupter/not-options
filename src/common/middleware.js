@@ -1,7 +1,9 @@
-const App = require('not-node').Application;
-const notError = require('not-error').notError;
+const
+	notNode = require('not-node'),
+	notError = require('not-error').notError;
 
 module.exports = function(req, res, next){
+	const App = notNode.Application;
 	let Options = App.getModel('Options');
 	if(Options){
 		Options.getAllAsObject()
