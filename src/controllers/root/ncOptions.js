@@ -46,7 +46,8 @@ class ncOptions extends ncCRUD {
 				path: ':value',
 				title: 'Значение',
 				searchable: true,
-				sortable: true
+				sortable: true,
+				hideOnMobile: true
 			}, {
 				path: ':active',
 				title: 'Активна',
@@ -57,7 +58,8 @@ class ncOptions extends ncCRUD {
 					return [{
 						value
 					}];
-				}
+				},
+				hideOnMobile: true
 			}, {
 				path: ':_id',
 				title: 'Действия',
