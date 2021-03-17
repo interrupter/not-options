@@ -12,9 +12,10 @@ let manifest = {
 	menu:{
 		side: {
 			items:[{
-				section: 'system',
-				title: 	'Настройки',
-				url: 	'/options'
+				id: 			'system.options',
+				section: 	'system',
+				title: 		'Настройки',
+				url: 			'/options'
 			}]
 		}
 	}
