@@ -13,6 +13,8 @@ const LABELS = {
 const MODEL = 'options';
 
 class ncOptions extends ncCRUD {
+	static MODEL_NAME = MODEL;
+	static MODULE_NAME = '';
 	constructor(app, params, schemes) {
 		super(app, MODEL);
 		this.setModuleName('');

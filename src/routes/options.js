@@ -240,8 +240,18 @@ exports._updateForModule = async (req, res) => {
 			throw new Error('moduleName is now valid');
 		}
 		const notApp = notNode.Application;
-		await notApp.getModel(MODEL_NAME).writeModuleOptions(moduleName, options);
+		const result = await notApp.getModel(MODEL_NAME).writeModuleOptions(moduleName, options);
 		notNode.Application.emit(`module:${moduleName}:options:updated`);
+		notNode.Application.inform({
+			reciever:{
+				role: 		'root'
+			},
+			tags: 			['moduleOptionsUpdated'],
+			userId,
+			userRole: req.userrole,
+			updatedAt: result.updatedAt,
+			moduleName
+		});
 		res.status(200).json({
 			status: 'ok'
 		});

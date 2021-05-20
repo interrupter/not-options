@@ -13,7 +13,9 @@ try {
       {
         default: true
       }
-    ]
+    ],
+    'createdAt',
+    'updatedAt'
   ];
 
   exports.keepNotExtended = false;
@@ -72,6 +74,7 @@ try {
           __closed: false
         }, {
           value,
+          updatedAt: Date.now()
         }).exec();
         let item = await this.findOne({
           id: name,
@@ -87,10 +90,11 @@ try {
           });
         }
       } else {
-        this.add({
+        return this.add({
           id: name,
           value,
-          active: true
+          active: true,
+          updatedAt: Date.now()
         });
       }
     },
