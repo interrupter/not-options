@@ -1,10 +1,7 @@
-const initFromSchema = require('not-node').Fields.fromSchema;
-const modelSchema = require('../models/options').thisSchema;
-
-const FIELDS = initFromSchema(modelSchema, [
+const FIELDS = [
 	'_id',
 	['optionsID', {}, 'ID'],
-]);
+];
 
 module.exports = {
 	model: 'options',

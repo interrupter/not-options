@@ -242,16 +242,20 @@ exports._updateForModule = async (req, res) => {
 		const notApp = notNode.Application;
 		const result = await notApp.getModel(MODEL_NAME).writeModuleOptions(moduleName, options);
 		notNode.Application.emit(`module:${moduleName}:options:updated`);
-		notNode.Application.inform({
-			reciever:{
+		const information  = {
+			recipient:{
 				role: 		'root'
 			},
 			tags: 			['moduleOptionsUpdated'],
 			userId,
-			userRole: req.userrole,
+			username: req.user.username,
+			userRole: req.user.role.toString(),
 			updatedAt: result.updatedAt,
 			moduleName
-		});
+		};
+		setTimeout(()=>{
+			notNode.Application.inform(information);
+		}, 1000);
 		res.status(200).json({
 			status: 'ok'
 		});

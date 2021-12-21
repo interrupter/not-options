@@ -1,7 +1,6 @@
 const log = require('not-log')(module, 'Options Model');
 try {
   const MODEL_NAME = 'Options';
-  const initFields = require('not-node').Fields.initFields;
   const Increment = require('not-node').Increment;
   const notError = require('not-error').notError;
 
@@ -18,9 +17,10 @@ try {
     'updatedAt'
   ];
 
+  exports.FIELDS = FIELDS;
+
   exports.keepNotExtended = false;
   exports.thisModelName = MODEL_NAME;
-  exports.thisSchema = initFields(FIELDS, 'model');
 
   exports.enrich = {
     versioning: true,
