@@ -1,7 +1,9 @@
 import Validators from '../common/validators.js';
 import {
-	ncCRUD
+	Frame
 } from 'not-bulma';
+
+const notCRUD = Frame.notCRUD;
 
 import UIImport from '../common/import.svelte';
 
@@ -12,7 +14,7 @@ const LABELS = {
 
 const MODEL = 'options';
 
-class ncOptions extends ncCRUD {
+class ncOptions extends notCRUD {
 	static MODEL_NAME = MODEL;
 	static MODULE_NAME = '';
 	constructor(app, params, schemes) {

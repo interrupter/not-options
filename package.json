@@ -1,6 +1,6 @@
 {
 	"name": "not-options",
-	"version": "0.1.40",
+	"version": "0.2.0",
 	"description": "not-* family options model in not- environment",
 	"main": "index.js",
 	"scripts": {

@@ -3,7 +3,7 @@ export default {
 		id(){return [];},
 		codeName(){return [];},
 	},
-	form:{
+	forms:{
 		edit(){
 			return {
 				clean: true

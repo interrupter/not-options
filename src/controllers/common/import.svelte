@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { UIOverlay } from 'not-bulma';
+  import { Elements } from 'not-bulma';
+  const UIOverlay = Elements.Modals.UIOverlay;
 
   let has_error = false;
   let error = '';
