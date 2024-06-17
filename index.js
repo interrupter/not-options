@@ -11,10 +11,10 @@ try{
 	});
 
 	module.exports = {
-		name: 'not-options',
+		name: require('./src/const').MODULE_NAME,
 		paths,
-		getMiddleware(options){
-			log.info('...options middleware');
+		getMiddleware(){
+			log?.info('...options middleware');
 			return middleware.bind(this);
 		},
 	};

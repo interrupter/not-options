@@ -1,4 +1,6 @@
 {
   "title": "Options module",
-  "document_not_found": "Document was not found"
+  "document_not_found": "Document was not found",
+  "action_export_to_json_title": "Export to JSON",
+  "action_import_from_json_title": "Import from JSON"
 }

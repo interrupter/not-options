@@ -1,3 +1,5 @@
+import 'styles.scss';
+
 export default class Common{
 	static DEFAULT_REDIRECT_TIMEOUT = 5000;
 	static CLASS_OK = 'is-success';
