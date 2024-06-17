@@ -1,6 +1,6 @@
 import CRUDGenericActionCreate from "not-bulma/src/frame/crud/actions/generic/create";
 import UIImportFromJSON from "./import.from.json.svelte";
-import { MODULE_NAME,DATA_MODEL_NAME } from "./../../../../const.js";
+import { MODULE_NAME, DATA_MODEL_NAME } from "./../../../../const.js";
 import notCommon from "not-bulma/src/frame/common";
 
 const DEFAULT_BREADCRUMB_TAIL = `${MODULE_NAME}:action_import_from_json_title`;
@@ -115,9 +115,9 @@ class ncaImportFromJSON extends CRUDGenericActionCreate {
         try {
             ncaImportFromJSON.setUILoading(controller);
             const res = await controller
-                .getModel(DATA_MODEL_NAME, { 
-                    moduleName: controller.MODULE_NAME,
-                    options: jsonAsText 
+                .getModel(DATA_MODEL_NAME, {
+                    moduleName: controller.getModuleName(),
+                    options: jsonAsText,
                 })
                 [`$${ncaImportFromJSON.MODEL_ACTION_PUT}`]();
             if (this.isResponseBad(res)) {
