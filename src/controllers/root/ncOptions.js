@@ -1,5 +1,6 @@
 import Validators from "../common/validators.js";
 import { Frame } from "not-bulma";
+import { MODULE_NAME, DATA_MODEL_NAME as modelName } from "../../const.js";
 
 const notCRUD = Frame.notCRUD;
 
@@ -11,15 +12,14 @@ const LABELS = {
     single: "Настройка",
 };
 
-const MODEL = "options";
-
 class ncOptions extends notCRUD {
-    static MODEL_NAME = MODEL;
-    static MODULE_NAME = "";
+    static MODEL_NAME = modelName;
+    static MODULE_NAME = MODULE_NAME;
+
     constructor(app, params, schemes) {
-        super(app, MODEL);
-        this.setModuleName("");
-        this.setModelName(MODEL);
+        super(app, modelName);
+        this.setModuleName(MODULE_NAME);
+        this.setModelName(modelName);
         this.setOptions("names", LABELS);
         this.setOptions("Validators", Validators);
         this.setOptions("params", params);
@@ -75,9 +75,8 @@ class ncOptions extends notCRUD {
                     path: ":_id",
                     title: "Действия",
                     type: "button",
-                    preprocessor: (value) => {
-                        return CRUDActionList.createActionsButtons(this, value);
-                    },
+                    preprocessor: (value) =>
+                        CRUDActionList.createActionsButtons(this, value),
                 },
             ],
         });
@@ -85,23 +84,8 @@ class ncOptions extends notCRUD {
         return this;
     }
 
-    createDefault() {
-        let newRecord = this.make[this.getModelName()]({
-            _id: null,
-            id: LABELS.single,
-            value: "",
-            active: true,
-        });
-        return newRecord;
-    }
-
     openExport() {
-        window.location.assign("/api/options/export");
-        /*this.make[this.getModelName()]({}).$export()
-			.then((data)=>{
-				this.log(data);
-			})
-			.catch(e => this.error(e));*/
+        window.location.assign(`/api/${MODULE_NAME}/${modelName}/export`);
     }
 
     closeImportPopup() {

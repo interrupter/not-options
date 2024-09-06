@@ -1,23 +1,21 @@
-import ncOptions from './ncOptions.js';
+import ncOptions from "./ncOptions.js";
 
 let manifest = {
-	router: {
-		manifest: [
-			ncOptions.getRoutes()
-		]
-	},
-	menu:{
-		side: {
-			items:[{
-				id: 			'system.options',
-				section: 	'system',
-				title: 		'Настройки',
-				url: 			'/options'
-			}]
-		}
-	}
+    router: {
+        manifest: [ncOptions.getRoutes()],
+    },
+    menu: {
+        side: {
+            items: [
+                {
+                    id: "system.options",
+                    section: "system",
+                    title: "Настройки",
+                    url: "/not-options/options",
+                },
+            ],
+        },
+    },
 };
 
-export {
-	manifest
-};
+export { manifest };
