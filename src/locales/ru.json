@@ -3,5 +3,7 @@
   "document_not_found": "Документ не найден",
   "action_export_to_json_title": "Экспорт в JSON",
   "action_import_from_json_title": "Импорт из JSON",
-  "action_import_success": "Импорт успешно завершен!"
+  "action_import_success": "Импорт успешно завершен!",
+  "options_label_plural": "Настройки",
+  "options_label_single": "Настройка"
 }
