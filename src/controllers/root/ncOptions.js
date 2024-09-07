@@ -1,5 +1,5 @@
 import Validators from "../common/validators.js";
-import { Frame } from "not-bulma";
+import { Frame, notCommon } from "not-bulma";
 import { MODULE_NAME, DATA_MODEL_NAME as modelName } from "../../const.js";
 
 const notCRUD = Frame.notCRUD;
@@ -8,13 +8,22 @@ import UIImport from "../common/import.svelte";
 import CRUDActionList from "not-bulma/src/frame/crud/actions/list";
 
 const LABELS = {
-    plural: "Настройки",
-    single: "Настройка",
+    plural: `${MODULE_NAME}:${modelName}_label_plural`,
+    single: `${MODULE_NAME}:${modelName}_label_single`,
 };
-
+Object.freeze(LABELS);
 class ncOptions extends notCRUD {
-    static MODEL_NAME = modelName;
-    static MODULE_NAME = MODULE_NAME;
+    static get MODULE_NAME() {
+        return MODULE_NAME;
+    }
+
+    static get MODEL_NAME() {
+        return modelName;
+    }
+
+    static get LABELS() {
+        return LABELS;
+    }
 
     constructor(app, params, schemes) {
         super(app, modelName);
@@ -82,6 +91,18 @@ class ncOptions extends notCRUD {
         });
         this.start();
         return this;
+    }
+
+    static getMenu() {
+        return [
+            {
+                section: ncOptions.MODULE_NAME,
+                title: ncOptions.LABELS.plural,
+                url: `/${notCommon.lowerFirstLetter(
+                    ncOptions.MODULE_NAME
+                )}/${notCommon.lowerFirstLetter(ncOptions.MODEL_NAME)}`,
+            },
+        ];
     }
 
     openExport() {
