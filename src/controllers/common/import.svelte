@@ -3,15 +3,21 @@
   import { Elements } from 'not-bulma';
   const UIOverlay = Elements.Modals.UIOverlay;
 
-  let has_error = false;
-  let error = '';
-  let has_info = false;
-  let info = '';
+  let has_error = $state(false);
+  let error = $state('');
+  let has_info = $state(false);
+  let info = $state('');
   let show = true;
   let closeOnClick = false;
 	let closeButton = false;
-  export let importing = false;
-  let fileField,overlay, filename = '';
+  /**
+   * @typedef {Object} Props
+   * @property {boolean} [importing]
+   */
+
+  /** @type {Props} */
+  let { importing = $bindable(false) } = $props();
+  let fileField = $state(),overlay = $state(), filename = $state('');
 
   const dispatch = createEventDispatcher();
 
@@ -67,7 +73,7 @@
     <h4 class="title is-4">Импорт настроек из файла</h4>
     <div class="file is-boxed file-select-box">
       <label class="file-label">
-        <input class="file-input" type="file" name="optionsToImport" on:change={fileNameUpdate} bind:this="{fileField}" accept=".json" multiple="false">
+        <input class="file-input" type="file" name="optionsToImport" onchange={fileNameUpdate} bind:this="{fileField}" accept=".json" multiple="false">
         <span class="file-cta">
           <span class="file-icon">
             <i class="fas fa-upload"></i>
@@ -93,10 +99,10 @@
 
     <div class="field is-grouped is-grouped-centered">
       <p class="control">
-        <button class="button is-primary {importing?'is-loading':''}" on:click={importFile}>Загрузить</button>
+        <button class="button is-primary {importing?'is-loading':''}" onclick={importFile}>Загрузить</button>
       </p>
       <p class="control">
-        <button class="button is-light" on:click={rejectImport}>Закрыть</button>
+        <button class="button is-light" onclick={rejectImport}>Закрыть</button>
       </p>
     </div>
   </div>

@@ -1,8 +1,8 @@
 <script>
-    export let value = {};
     import UIButtons from "not-bulma/src/elements/button/ui.buttons.svelte";
+    let { value = {} } = $props();
 
-    $: json = value && JSON.stringify(value, null, 4);
+    let json = $derived(value && JSON.stringify(value, null, 4));
 
     const BUTTONS = [
         {

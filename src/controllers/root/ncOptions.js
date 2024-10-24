@@ -6,6 +6,7 @@ const notCRUD = Frame.notCRUD;
 
 import UIImport from "../common/import.svelte";
 import CRUDActionList from "not-bulma/src/frame/crud/actions/list";
+import { mount } from "svelte";
 
 const LABELS = {
     plural: `${MODULE_NAME}:${modelName}_label_plural`,
@@ -119,9 +120,9 @@ class ncOptions extends notCRUD {
     openImport() {
         this.log("import");
         this.closeImportPopup();
-        this.ui.import = new UIImport({
-            target: document.body,
-        });
+        this.ui.import = mount(UIImport, {
+                    target: document.body,
+                });
         this.ui.import.$on("reject", (ev) => {
             if (ev.detail.error) {
                 this.error(ev.detail.error);

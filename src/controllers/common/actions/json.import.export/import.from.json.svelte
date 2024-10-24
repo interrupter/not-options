@@ -4,8 +4,14 @@
     import UITextarea from "not-bulma/src/elements/form/ui.textarea.svelte";
     import UIButton from "not-bulma/src/elements/button/ui.button.svelte";
     import { MODULE_NAME } from "../../../../const.js";
-    export let value = "";
-    export let loading = false;
+    /**
+     * @typedef {Object} Props
+     * @property {string} [value]
+     * @property {boolean} [loading]
+     */
+
+    /** @type {Props} */
+    let { value = $bindable(""), loading = false } = $props();
 </script>
 
 <UITextarea bind:value rows={20} disabled={loading} placeholder={""} />
