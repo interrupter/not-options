@@ -1,12 +1,13 @@
 const log = require("not-log")(module, "Options Model");
 try {
     const MODEL_NAME = "Options";
+    const {MODULE_NAME} = require('../const');
     const Increment = require("not-node").Increment;
     const notError = require("not-error").notError;
 
     const FIELDS = [
         "id",
-        "value",
+        `${MODULE_NAME}//value`,
         [
             "active",
             {

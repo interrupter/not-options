@@ -42,10 +42,9 @@ class ncaImportFromJSON extends CRUDGenericActionCreate {
     static prepareUIOptions(controller, value) {
         const actionName = this.getModelActionName(controller);
         return {
-            props: {
+           
                 actionName,
-            },
-            target: controller.getContainerInnerElement(),
+            
         };
     }
 
@@ -71,9 +70,9 @@ class ncaImportFromJSON extends CRUDGenericActionCreate {
             //creating action UI component
             const uiComponent = this.UIConstructor;
             const response = {};
-            this.setUI(
+            this.buildUI(
                 controller,
-                new uiComponent(this.prepareUIOptions(controller, response))
+                this.prepareUIOptions(controller, response)
             );
             //bind events to UI
             this.bindUIEvents(controller, params, response);
@@ -91,24 +90,24 @@ class ncaImportFromJSON extends CRUDGenericActionCreate {
 
     static bindUIEvents(controller, params, response) {
         if (notCommon.isFunc(controller.goBack)) {
-            this.bindUIEvent(controller, "reject", () => controller.goBack());
+            this.bindUIEvent(controller, "onreject", () => controller.goBack());
         }
 
-        this.bindUIEvent(controller, "import", ({ detail }) => {
+        this.bindUIEvent(controller, "onimport", ({ detail }) => {
             ncaImportFromJSON.import(controller, detail);
         });
     }
 
     static setUILoading(controller) {
-        this.getUI(controller).$set({ loading: true });
+        this.getUI(controller).set('loading', true );
     }
 
     static setUILoaded(controller) {
-        this.getUI(controller).$set({ loading: false });
+        this.getUI(controller).set('loading', false );
     }
 
     static setUIError(controller, message) {
-        this.getUI(controller).$set({ error: message });
+        this.getUI(controller).set( 'error', message);
     }
 
     static async import(controller, jsonAsText) {

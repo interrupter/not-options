@@ -1,6 +1,4 @@
 <script>
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
     import UITextarea from "not-bulma/src/elements/form/ui.textarea.svelte";
     import UIButton from "not-bulma/src/elements/button/ui.button.svelte";
     import { MODULE_NAME } from "../../../../const.js";
@@ -11,15 +9,17 @@
      */
 
     /** @type {Props} */
-    let { value = $bindable(""), loading = false } = $props();
+    let {
+        value = $bindable(""),
+        loading = false,
+        onimport = () => {},
+    } = $props();
 </script>
 
 <UITextarea bind:value rows={20} disabled={loading} placeholder={""} />
 
 <UIButton
-    action={() => {
-        dispatch("import", value);
-    }}
+    action={() => onimport(value)}
     color={"primary"}
     disabled={loading}
     {loading}

@@ -49,11 +49,10 @@ const DEFAULT_BREADCRUMB_TAIL = `${MODULE_NAME}:action_export_to_json_title`;
     static prepareUIOptions(controller, response) {
         const actionName = this.getModelActionName(controller);
         return {
-            target: controller.getContainerInnerElement(),
-            props: {
+            
                 value: response.result,
                 actionName,
-            },
+           
         };
     }
 
@@ -79,11 +78,10 @@ const DEFAULT_BREADCRUMB_TAIL = `${MODULE_NAME}:action_export_to_json_title`;
             if (this.isResponseBad(response)) {
                 return controller.showErrorMessage(response);
             }
-            //creating action UI component
-            const uiComponent = this.UIConstructor;
-            this.setUI(
+            //creating action UI component           
+            this.buildUI(
                 controller,
-                new uiComponent(this.prepareUIOptions(controller, response))
+                this.prepareUIOptions(controller, response)
             );
             //bind events to UI
             this.bindUIEvents(controller, params, response);

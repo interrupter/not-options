@@ -6,7 +6,8 @@ const notCRUD = Frame.notCRUD;
 
 import UIImport from "../common/import.svelte";
 import CRUDActionList from "not-bulma/src/frame/crud/actions/list";
-import { mount } from "svelte";
+
+import { UIAdapterSvelte } from "not-bulma/src/frame/index.js";
 
 const LABELS = {
     plural: `${MODULE_NAME}:${modelName}_label_plural`,
@@ -120,24 +121,22 @@ class ncOptions extends notCRUD {
     openImport() {
         this.log("import");
         this.closeImportPopup();
-        this.ui.import = mount(UIImport, {
-                    target: document.body,
-                });
-        this.ui.import.$on("reject", (ev) => {
-            if (ev.detail.error) {
-                this.error(ev.detail.error);
+        this.ui.import = new UIAdapterSvelte(UIImport, document.body);
+        this.ui.import.on("onreject", (ev) => {
+            if (ev.error) {
+                this.error(ev.error);
             }
             this.closeImportPopup();
         });
-        this.ui.import.$on("resolve", () => this.closeImportPopup());
-        this.ui.import.$on("import", async (ev) => {
-            if (ev.detail.options) {
+        this.ui.import.on("onresolve", () => this.closeImportPopup());
+        this.ui.import.on("onimport", async (ev) => {
+            if (ev.options) {
                 try {
-                    let res = await this.requestImport(ev.detail.options);
+                    let res = await this.requestImport(ev.options);
                     this.log(res);
                     if (res.status === "ok") {
                         if (res.result && res.result.info) {
-                            this.ui.import.setInfo(res.result.info);
+                            this.ui.import.set('info', res.result.info);
                             this.afterImportSuccess(res.result);
                         }
                     } else {
