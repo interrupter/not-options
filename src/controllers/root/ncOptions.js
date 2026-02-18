@@ -100,7 +100,7 @@ class ncOptions extends notCRUD {
             {
                 section: ncOptions.MODULE_NAME,
                 title: ncOptions.LABELS.plural,
-                url: `/${notCommon.lowerFirstLetter(
+                href: `/${notCommon.lowerFirstLetter(
                     ncOptions.MODULE_NAME
                 )}/${notCommon.lowerFirstLetter(ncOptions.MODEL_NAME)}`,
             },

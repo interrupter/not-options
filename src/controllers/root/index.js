@@ -11,7 +11,7 @@ let manifest = {
                     id: "system.options",
                     section: "system",
                     title: "Настройки",
-                    url: "/not-options/options",
+                    href: "/not-options/options",
                 },
             ],
         },
